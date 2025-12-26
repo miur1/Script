@@ -6,7 +6,6 @@ local Games = {
     [2753915549] = "bf.lua", 
     [4442272183] = "bf.lua", 
     [7449423635] = "bf.lua", 
-    [126884695634066] = "Grow_A_Garden.lua",
 }
 
 -- general game
