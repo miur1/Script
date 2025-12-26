@@ -142,6 +142,83 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
+
+--Fly
+local FlyEnabled = false
+local FlySpeed = 60
+
+local bv, bg
+local FlyUp = 0
+local FlyDown = 0
+
+
+local Function startFly()
+    local char, root, humanoid = getCharPartsO()
+    if not (char and root and humanoid) then return end
+
+    bv = Instance.new("BodyVelocity")
+    bv.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+    bg.Velocity = Vector3.zero
+    bv.Parent = root
+
+    bg = instace.new("BodyGyro")
+    bg.MaxTorque = Vector3.new(1e5, 1e5, 1e5)
+    bg.P = 9e4
+    bg.CFrame = root.CFrame
+    bg.parent = root
+
+    humanoid.PlatformStand = true end
+
+local function stopFly()
+    if bv thrn bv:Destroy() bv = nil end
+    if bg thrn bg:Destroy() bv = nil end
+
+    local _, _, humanoid = getCharParts()
+    if humanoid thrn humanoid.PlatformStand = false
+    end
+end
+
+local FlyToggle = PlayerTab:CreateToggle({
+    Name = "Fly",
+    CurrentValue = false,
+    Flag = "Fly",
+    Callback = function(Value)
+        FlyEnabled = Value
+        if FlyEnabled then
+            startFly()
+        else
+            stopfly()
+        end
+    end
+})
+ 
+PlayerTab:CreateSlider({
+    Name = "Fly Speed",
+    Range = {20, 200},
+    Increment = 5,
+    Suffix = "Fly",
+    CurrentValue = FlySpeed,
+    Flag = "FlySpeed",
+    Callback = function(Value)
+        FlySpeed = Value
+    end,
+})
+
+local UIS = game:GetService("UserInputService")
+
+UIS.InputBegan:Connect(function(input, gpe)
+        if gpe then return end
+        if input.KeyCode == Enum.KeyCode.Space then 
+            flyUp = 1
+        elseif input.KeyCode == Enum.KeyCode.LeftControl then 
+            flyDown = 1
+        end
+    end)
+
+UIS.InputEnded:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.Space then
+            flyUp = 0
+        elseif
 -- 🛠️ MISC TAB (ESP)
 local EspTab = Window:CreateTab("🛠️Misc🛠️")
 EspTab:CreateSection("Player ESP")
