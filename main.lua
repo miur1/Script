@@ -207,18 +207,41 @@ PlayerTab:CreateSlider({
 local UIS = game:GetService("UserInputService")
 
 UIS.InputBegan:Connect(function(input, gpe)
-        if gpe then return end
-        if input.KeyCode == Enum.KeyCode.Space then 
-            flyUp = 1
-        elseif input.KeyCode == Enum.KeyCode.LeftControl then 
-            flyDown = 1
-        end
-    end)
+    if gpe then return end
+    if input.KeyCode == Enum.KeyCode.Space then
+        flyUp = 1
+    elseif input.KeyCode == Enum.KeyCode.LeftControl then
+        flyDown = 1
+    end
+end)
 
 UIS.InputEnded:Connect(function(input)
-        if input.KeyCode == Enum.KeyCode.Space then
-            flyUp = 0
-        elseif
+    if input.KeyCode == Enum.KeyCode.Space then
+        flyUp = 0
+    elseif input.KeyCode == Enum.KeyCode.LeftControl then
+        flyDown = 0
+    end
+end)
+
+RunService.RenderStepped:Connect(function()
+    if FlyEnabled and bv and bg then
+        local char, root, humanoid = getCharParts()
+        if not (char and root and humanoid) then return end
+
+        local cam = workspace.CurrentCamera
+        local moveDir = humanoid.MoveDirection
+        local vertical = Vector3.new(0, flyUp - flyDown, 0)
+
+        bv.Velocity = (cam.CFrame:VectorToWorldSpace(moveDir) + vertical) * FlySpeed
+        bg.CFrame = cam.CFrame
+    end
+end)
+
+player.CharacterAdded:Connect(function()
+    FlyEnabled = false
+    stopFly()
+end)
+
 -- 🛠️ MISC TAB (ESP)
 local EspTab = Window:CreateTab("🛠️Misc🛠️")
 EspTab:CreateSection("Player ESP")
