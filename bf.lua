@@ -96,28 +96,17 @@ local function getCharParts()
     end
 end
 
-local velocity = Vector3.zero
+local defaultSpeed = 16
 
--- loop utama
-RunService.RenderStepped:Connect(function(dt)
-    if not SpeedEnabled then
-        velocity = Vector3.zero
-        return
-    end
+RunService.Heartbeat:Connect(function()
+    local _, _, humanoid = getCharParts()
+    if not humanoid then return end
 
-    local char, root, humanoid = getCharParts()
-    if not (char and root and humanoid) then return end
-
-    local moveDir = humanoid.MoveDirection
-    if moveDir.Magnitude > 0 then
-        local targetVelocity = moveDir.Unit * SpeedValue
-        velocity = velocity:Lerp(targetVelocity, math.clamp(SmoothFactor * dt, 0, 1))
+    if SpeedEnabled then
+        humanoid.WalkSpeed = SpeedValue
     else
-        velocity = velocity:Lerp(Vector3.zero, math.clamp(SmoothFactor * dt * 1.5, 0, 1))
+        humanoid.WalkSpeed = defaultSpeed
     end
-
-    -- update posisi player
-    root.CFrame = root.CFrame + (velocity * dt)
 end)
 
 -- reset velocity saat respawn
